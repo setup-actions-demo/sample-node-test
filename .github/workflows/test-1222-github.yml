@@ -15,7 +15,7 @@ jobs:
         node-version: '20.18.2'
     - name: Enable Corepack
       # run: npm install --global --force corepack@latest
-      run: npm install --global --force corepack@latest
+      run: npm i -g --force corepack && corepack enable
 
     - name: Install dependencies
       run: pnpm install
