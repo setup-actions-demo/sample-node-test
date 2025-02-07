@@ -1,0 +1,22 @@
+name: Test corepack error-1222
+
+on: [push, pull_request]
+
+jobs:
+  corepack-upgrade:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.18.2'
+
+    - name: Check Corepack version
+      run: corepack -v
+    - name: Enable Corepack
+      run: npm install --global --force corepack@latest
+    - name: Install dependencies
+      run: pnpm install
