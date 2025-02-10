@@ -27,35 +27,6 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-      name: ' 🧪 Test Windows'
-on:
-  push:
-    branches:
-      - main
-  workflow_dispatch:
-
-jobs:
-  test-os:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        node-version:
-          - 18.x
-          - 20.x
-          - 22.x
-          - 23.x
-
-        os:
-          - windows-latest
-          # - macos-latest # Smoke test is enough for now.
-      fail-fast: false
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
         with:
           version: 10
 
@@ -71,19 +42,3 @@ jobs:
           # npm i -g --force corepack
           # corepack enable
           pnpm -v
-
-
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4.2.0
-        with:
-          registry-url: 'https://registry.npmjs.org'
-          node-version: ${{ matrix.node-version }}
-          cache: 'pnpm'
-
-      - name: Check pnpm version
-        run: |
-          # npm i -g --force corepack
-          # corepack enable
-          pnpm -v
-
