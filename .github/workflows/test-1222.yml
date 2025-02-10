@@ -1,6 +1,10 @@
 name: Test corepack error-1222
 
-on: [push, pull_request]
+on:
+  # push:
+  #   branches:
+  #     - main
+  workflow_dispatch:
 
 jobs:
   corepack-upgrade:
