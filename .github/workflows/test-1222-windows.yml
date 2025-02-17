@@ -1,8 +1,8 @@
 name: ' 🧪 Test Windows'
 on:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -19,7 +19,6 @@ jobs:
 
         os:
           - windows-latest
-          # - macos-latest # Smoke test is enough for now.
       fail-fast: false
 
     steps:
@@ -27,19 +26,23 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 9
-
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4.2.0
         with:
           registry-url: 'https://registry.npmjs.org'
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
-      - name: Install dependencies
-        run: pnpm install
-      - name: Check pnpm version
+      - name: Get exact Node.js version
+        run: echo "NODE_VERSION=$(node -v)" >> $GITHUB_ENV
+        shell: bash
+      - name: Clear hosted tool cache
         run: |
-          # npm i -g --force corepack
-          # corepack enable
+          $nodeVersion = $env:NODE_VERSION.TrimStart('v')
+          Remove-Item -Force "C:\hostedtoolcache\windows\node\$nodeVersion\x64\corepack*"
+      - name: Enable Corepack
+        run: |
+          npm i -g --force corepack
+          corepack enable
+          corepack -v
           pnpm -v
+        shell: bash
